@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:firebase_analytics/observer.dart';
+import 'services/analytics.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -7,11 +10,12 @@ Future<void> main() async {
   // Initialize Firebase to get access to the binary messenger before runApp
   // function call
   await Firebase.initializeApp();
-
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseAnalyticsObserver observer = AnalyticsService.observer;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      navigatorObservers: <NavigatorObserver>[observer],
     );
   }
 }
@@ -56,6 +61,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  final FirebaseAnalyticsObserver observer = AnalyticsService.observer;
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -65,6 +72,15 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    _incrementCounterAnalytics();
+  }
+
+  void _incrementCounterAnalytics() {
+    final String screenName = 'Amount of counter $_counter';
+    observer.analytics.setCurrentScreen(
+      screenName: screenName,
+    );
+    print('Logged $_counter');
   }
 
   @override

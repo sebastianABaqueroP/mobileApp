@@ -8,7 +8,7 @@
             "name": "my_app debug",
             "request": "launch",
             "flutterMode": "debug",
-            "args": ["--no-sound-null-safety"],
+            "args": ["--no-sound-null-safety", "--scan --debug"],
             "type": "dart",
         },
         {
