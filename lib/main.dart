@@ -65,6 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final FirebaseAnalyticsObserver observer = AnalyticsService.observer;
 
+  final AnalyticsService _analyticsService = new AnalyticsService();
+
+  final String email = 'test@mail.com';
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -75,6 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
     _incrementCounterAnalytics();
+
+    if (_counter == 3) {
+      _analyticsService.logLogin();
+    }
+    if (_counter % 2 == 0) {
+      _analyticsService.setUserProperties(
+        userId: _counter.toString() + email,
+        userRole: 'customer $_counter',
+      );
+    }
+    if (_counter == 10) {
+      _analyticsService.logLogoutPressed();
+    }
   }
 
   void _incrementCounterAnalytics() {
