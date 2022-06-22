@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_analytics/observer.dart';
+import 'firebase_options.dart';
 import 'services/analytics.dart';
 
 Future<void> main() async {
@@ -9,7 +10,8 @@ Future<void> main() async {
 
   // Initialize Firebase to get access to the binary messenger before runApp
   // function call
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(MyApp());
 }
 
